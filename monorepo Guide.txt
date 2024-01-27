@@ -1,0 +1,7 @@
+pros:
+1. you can add same dependencys node modules in all packages onlu once
+2. you can define types only once and share them between packages like server and front
+
+tips:
+to add a dependecy to all packages:
+npx lerna add {packageName}

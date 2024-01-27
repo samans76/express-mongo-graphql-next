@@ -1,0 +1,11 @@
+{
+  "name": "express-mongo-graphql-next",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces":["packages/*"],
+  "devDependencies": {
+    "lerna": "^8.0.2"
+  }
+}
