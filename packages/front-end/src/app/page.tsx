@@ -1,9 +1,16 @@
 "use client";
 
-import axios from "axios";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
-import { Author } from "./form/page";
+import { Author } from "@/types/book";
+import {
+  getAndSetAuthors,
+  getAuthorBooks,
+  getAuthors,
+  getBook,
+  getBooks,
+  getBooksOfAuthorsBelowAge,
+} from "@/services";
 
 export default function Home() {
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -12,15 +19,7 @@ export default function Home() {
   const [bookAuthorId, setBookAuthorId] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://www.localhost:3001/author")
-      .then((res) => {
-        setAuthors(res.data);
-        console.log("authors :", res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getAndSetAuthors(setAuthors);
   }, []);
 
   return (
@@ -29,17 +28,13 @@ export default function Home() {
         <Button
           title="get books"
           onClick={() => {
-            axios.get("http://www.localhost:3001/book").then((res) => {
-              console.log("message :", res.data);
-            });
+            getBooks();
           }}
         />
         <Button
           title="get authors"
           onClick={() => {
-            axios.get("http://www.localhost:3001/author").then((res) => {
-              console.log("message :", res.data);
-            });
+            getAuthors();
           }}
         />
       </div>
@@ -54,11 +49,7 @@ export default function Home() {
           className="h-[40px]"
           title="get book"
           onClick={() => {
-            axios
-              .get(`http://www.localhost:3001/book/${bookInput}`)
-              .then((res) => {
-                console.log("message :", res.data);
-              });
+            getBook(bookInput);
           }}
         />
       </div>
@@ -72,8 +63,8 @@ export default function Home() {
           }}
           value={bookAuthorId}
         >
-          {authors.map((a, i) => (
-            <option key={i} value={a._id}>
+          {authors?.map((a, i) => (
+            <option key={i} value={a.id}>
               {a.name}
             </option>
           ))}
@@ -82,11 +73,7 @@ export default function Home() {
           className="h-[40px]"
           title="get author books"
           onClick={() => {
-            axios
-              .get(`http://www.localhost:3001/author/${bookAuthorId}/books`)
-              .then((res) => {
-                console.log("message :", res.data);
-              });
+            getAuthorBooks(bookAuthorId);
           }}
         />
       </div>
@@ -101,13 +88,7 @@ export default function Home() {
           className="h-[40px]"
           title="get books of authors below this age"
           onClick={() => {
-            axios
-              .get(
-                `http://www.localhost:3001/book/authorsYoungerThan/${authorAge}`
-              )
-              .then((res) => {
-                console.log("message :", res.data);
-              });
+            getBooksOfAuthorsBelowAge(authorAge);
           }}
         />
       </div>
