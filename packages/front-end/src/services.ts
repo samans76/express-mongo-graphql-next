@@ -83,7 +83,7 @@ export const getBooks = () => {
 
 export const getBook = (id: string) => {
   const query = `{
-        book(id: ${id}) {
+        book(id: \"${id}\") {
           id
           name
           author{
