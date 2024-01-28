@@ -4,8 +4,6 @@ import Author from "./models/authorModel";
 import Book from "./models/bookModel";
 const app = express();
 const port = 3001;
-// 1. benchmark best ways to connect database
-// 2. turn this and front to graphql
 const uri =
   "mongodb+srv://samanDB:123159159@cluster0.uvrcdhb.mongodb.net/mongodb?retryWrites=true&w=majority";
 
@@ -45,6 +43,7 @@ app.post("/author", async (req, res) => {
   try {
     const newAuthor = new Author({
       name: req.body.name,
+      age:req.body.age
     });
     await newAuthor.save();
     res.status(200).json(newAuthor);
@@ -71,6 +70,22 @@ app.get("/author", async (req, res) => {
 app.get("/author/:id", async (req, res) => {
   let author = await Author.findById(req.params.id);
   res.status(200).json(author);
+});
+
+app.get("/author/:id/books", async (req, res) => {
+  // get author books
+  console.log()
+  let books = await Book.find({author: req.params.id})
+  res.status(200).json(books);
+});
+
+app.get("/book/authorsYoungerThan/:age", async (req, res) => {
+  // get books of authors younger than this age
+const authors = await Author.find({age:{$lt: parseInt(req.params.age) }}) as any
+const authorsIds = authors.map((a:any)=> a._id) 
+const books = await Book.find({author: {$in: authorsIds}})
+
+res.status(200).json(books);
 });
 
 app.listen(port, () => {

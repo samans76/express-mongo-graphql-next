@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import axios from "axios";
 
-type Author = { _id: string; name: string };
+export type Author = { _id: string; name: string };
+
 function index() {
   const [authors, setAuthors] = useState<Author[]>([]);
   const [authorName, setAuthorName] = useState("");
+  const [authorAge, setAuthorAge] = useState("");
   const [bookName, setBookName] = useState("");
   const [bookAuthorId, setBookAuthorId] = useState("");
 
@@ -34,11 +36,20 @@ function index() {
           onChange={(e) => setAuthorName(e.target.value)}
         />
       </div>
+      <div className="flex gap-2">
+        <span>Author Age</span>
+        <input
+          className="w-[260px] h-[40px] px-3 border-2 border-gray-400 rounded-md flex items-center gap-5"
+          value={authorAge}
+          onChange={(e) => setAuthorAge(e.target.value)}
+        />
+      </div>
       <Button
         title="add author"
         onClick={() => {
           axios.post("http://www.localhost:3001/author", {
             name: authorName,
+            age: authorAge,
           });
         }}
       />
